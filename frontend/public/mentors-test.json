@@ -1,0 +1,35 @@
+[
+  {
+    "id": 1,
+    "email": "mentor1@example.com",
+    "role": "mentor",
+    "profile": {
+      "name": "홍길동",
+      "bio": "프론트엔드 멘토입니다.",
+      "imageUrl": "https://placehold.co/500x500.jpg?text=MENTOR",
+      "skills": ["React", "Vue", "JavaScript"]
+    }
+  },
+  {
+    "id": 2,
+    "email": "mentor2@example.com",
+    "role": "mentor",
+    "profile": {
+      "name": "이몽룡",
+      "bio": "백엔드 멘토입니다.",
+      "imageUrl": "https://placehold.co/500x500.jpg?text=MENTOR",
+      "skills": ["Node.js", "Express", "MongoDB"]
+    }
+  },
+  {
+    "id": 3,
+    "email": "mentor3@example.com",
+    "role": "mentor",
+    "profile": {
+      "name": "성춘향",
+      "bio": "풀스택 멘토입니다.",
+      "imageUrl": "https://placehold.co/500x500.jpg?text=MENTOR",
+      "skills": ["React", "Node.js", "TypeScript"]
+    }
+  }
+]
