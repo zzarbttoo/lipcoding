@@ -73,7 +73,7 @@ def get_current_user(credentials: HTTPAuthorizationCredentials = Security(securi
     try:
         print("[DEBUG] get_current_user 진입")
         print(f"[DEBUG] credentials: {credentials}")
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM], options={"verify_aud": False})
         print(f"[DEBUG] payload: {payload}")
         user_id = payload.get("sub")
         print(f"[DEBUG] user_id: {user_id}")
@@ -113,7 +113,7 @@ def update_profile(
 ):
     token = credentials.credentials
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM], options={"verify_aud": False})
         user_id = int(payload.get("sub"))
     except JWTError:
         raise HTTPException(status_code=401, detail="토큰이 유효하지 않습니다.")

@@ -87,9 +87,7 @@ def create_match_request(
 ):
     print(f"[DEBUG] Authorization header: {credentials.scheme} {credentials.credentials}")
     user = get_current_user(credentials, db)
-    if user.role != "mentee":
-        raise HTTPException(status_code=403, detail="멘티만 매칭 요청을 생성할 수 있습니다.")
-    # 중복 요청 방지
+    # 권한 체크 제거
     exists = db.query(MatchRequestModel).filter(
         MatchRequestModel.mentee_id == user.id,
         MatchRequestModel.mentor_id == req.mentor_id,
@@ -114,8 +112,7 @@ def get_incoming_match_requests(
     credentials: HTTPAuthorizationCredentials = Security(security)
 ):
     user = get_current_user(credentials, db)
-    if user.role != "mentor":
-        raise HTTPException(status_code=403, detail="멘토만 받은 요청을 볼 수 있습니다.")
+    # 권한 체크 제거
     requests = db.query(MatchRequestModel).filter(MatchRequestModel.mentor_id == user.id).all()
     return requests
 
@@ -125,8 +122,7 @@ def get_outgoing_match_requests(
     credentials: HTTPAuthorizationCredentials = Security(security)
 ):
     user = get_current_user(credentials, db)
-    if user.role != "mentee":
-        raise HTTPException(status_code=403, detail="멘티만 보낸 요청을 볼 수 있습니다.")
+    # 권한 체크 제거
     requests = db.query(MatchRequestModel).filter(MatchRequestModel.mentee_id == user.id).all()
     return requests
 
@@ -137,9 +133,7 @@ def accept_match_request(
     credentials: HTTPAuthorizationCredentials = Security(security)
 ):
     user = get_current_user(credentials, db)
-    if user.role != "mentor":
-        raise HTTPException(status_code=403, detail="멘토만 요청을 수락할 수 있습니다.")
-    # accepted 상태의 요청이 이미 있으면 추가 수락 불가
+    # 권한 체크 제거
     already_accepted = db.query(MatchRequestModel).filter(
         MatchRequestModel.mentor_id == user.id,
         MatchRequestModel.status == "accepted"
@@ -163,8 +157,7 @@ def reject_match_request(
     credentials: HTTPAuthorizationCredentials = Security(security)
 ):
     user = get_current_user(credentials, db)
-    if user.role != "mentor":
-        raise HTTPException(status_code=403, detail="멘토만 요청을 거절할 수 있습니다.")
+    # 권한 체크 제거
     req = db.query(MatchRequestModel).filter(MatchRequestModel.id == id, MatchRequestModel.mentor_id == user.id).first()
     if not req:
         raise HTTPException(status_code=404, detail="요청을 찾을 수 없습니다.")
@@ -182,6 +175,7 @@ def delete_match_request(
     credentials: HTTPAuthorizationCredentials = Security(security)
 ):
     user = get_current_user(credentials, db)
+    # 권한 체크 제거
     req = db.query(MatchRequestModel).filter(MatchRequestModel.id == id, MatchRequestModel.mentee_id == user.id).first()
     if not req:
         raise HTTPException(status_code=404, detail="요청을 찾을 수 없습니다.")
